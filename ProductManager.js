@@ -4,16 +4,13 @@ class ProductManager {
     this.path = path
     this.id = 0
   }
-  async getProducts() {
-    if (fs.existsSync(this.path)) {
-      let readFile = await fs.promises.readFile(this.path, "utf-8")
-      console.log(`Productos: ${readFile}`)
-    } else {
+  async getProducts() { 
+    if (!fs.existsSync(this.path)) {
       fs.promises.writeFile(this.path, JSON.stringify([]), "utf-8")
+    }
       let readFile = await fs.promises.readFile(this.path, "utf-8")
       console.log(`Productos: ${readFile}`)
     }
-  }
   async addProduct(title, description, price, thumbnail, code, stock) {
     if (!fs.existsSync(this.path)) {
       await fs.promises.writeFile(this.path, JSON.stringify([]), "utf-8")
@@ -46,6 +43,9 @@ class ProductManager {
     }
   }
   async getProductById(id, title, description, price, thumbnail, code, stock) {
+    if (!fs.existsSync(this.path)) {
+      fs.promises.writeFile(this.path, JSON.stringify([]), "utf-8")
+    }
     let readFile = await fs.promises.readFile(this.path, "utf-8")
     let readProduct = JSON.parse(readFile)
     const idProduct = readProduct.find((product) => product.id === id)
@@ -56,6 +56,9 @@ class ProductManager {
     }
   }
   async updateProduct(id, title, description, price, thumbnail, code, stock) {
+    if (!fs.existsSync(this.path)) {
+      fs.promises.writeFile(this.path, JSON.stringify([]), "utf-8")
+    }
     let readFile = await fs.promises.readFile(this.path, "utf-8")
     let readProduct = JSON.parse(readFile)
     const idProduct = readProduct.find((product) => product.id === id)
@@ -67,6 +70,9 @@ class ProductManager {
     }
   }
   async deleteProduct(id) {
+    if (!fs.existsSync(this.path)) {
+      fs.promises.writeFile(this.path, JSON.stringify([]), "utf-8")
+    }
     let readFile = await fs.promises.readFile(this.path, "utf-8")
     let readProduct = JSON.parse(readFile)
     const idProduct = readProduct.find((product) => product.id === id)
